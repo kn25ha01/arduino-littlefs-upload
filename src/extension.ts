@@ -7,6 +7,7 @@ import { spawn } from 'child_process';
 
 const writeEmitter = new vscode.EventEmitter<string>();
 let writerReady : boolean = false;
+//let myPath : string = ""; //Please enable this line
 
 function makeTerminal(title : string) {
     // If it exists, move it to the front
@@ -166,8 +167,8 @@ function getDefaultPartitionScheme(boardDetails : BoardDetails) : string | undef
 }
 
 function getPartitionSchemeFile(arduinoContext : ArduinoContext) {
-    if (arduinoContext.sketchPath !== undefined) {
-        let localPartitionsFile = arduinoContext.sketchPath + path.sep + "partitions.csv";
+    if (myPath !== undefined) {
+        let localPartitionsFile = myPath + path.sep + "partitions.csv";
         if (fs.existsSync(localPartitionsFile)) {
             writeEmitter.fire(blue("Using partition: " + green("partitions.csv in sketch folder") + "\r\n"));
             return localPartitionsFile;
@@ -225,9 +226,9 @@ export function activate(context: vscode.ExtensionContext) {
 
         writeEmitter.fire(bold("LittleFS Filesystem Uploader v" + String(context.extension.packageJSON.version) + " -- https://github.com/earlephilhower/arduino-littlefs-upload\r\n\r\n"));
 
-        writeEmitter.fire(blue(" Sketch Path: ") + green("" + arduinoContext.sketchPath) + "\r\n");
+        writeEmitter.fire(blue(" Sketch Path: ") + green("" + myPath) + "\r\n");
         // Need to have a data folder present, or this isn't gonna work...
-        let dataFolder = arduinoContext.sketchPath + path.sep + "data";
+        let dataFolder = myPath + path.sep + "data";
         writeEmitter.fire(blue("   Data Path: ") + green(dataFolder) + "\r\n");
         if (!fs.existsSync(dataFolder)) {
             writeEmitter.fire(red("\r\n\r\nERROR: No data folder found at " + dataFolder) + "\r\n");

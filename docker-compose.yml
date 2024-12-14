@@ -1,0 +1,10 @@
+services:
+  arduino-littlefs-upload:
+    container_name: arduino-littlefs-upload
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/usr/local/src
